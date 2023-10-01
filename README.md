@@ -1,4 +1,4 @@
-# tavrida-admin
+# voices-admin
 
 ### Установка на чистую систему
 
@@ -13,33 +13,3 @@
     ```shell
     $ pre-commit install
     ```
-
-### docker-compose
-
-```shell
-  $ make compose-up
-  $ make compose-enter
-  $ make runserver
-```
-
-Для остановки окружения:
-
-```shell
-  $ make compose-down
-```
-
-`make compose-enter` открывает новый шелл внутри app-контейнера (например, для миграций, или же запуска `./manage.py shell_plus` для дебага)
-
-## Code Style
-
-Задается пресетами isort/black/flake8, единственное, что требуется сделать — установить pre-commit hook:
-
-```shell
-pre-commit install
-```
-
-Соответствие правилам проверяется в пайплайнах мерж-реквестов и в ветке dev.
-
-## Предостережения
-
-- не стоит редактировать файл `settings.py` напрямую: если необходимо изменить какие-то уже существующие значения, это можно сделать редактированием переменных окружения в файле `.env`

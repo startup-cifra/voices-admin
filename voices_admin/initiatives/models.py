@@ -112,3 +112,4 @@ class Initiative(models.Model):
         db_table = "initiatives"
         verbose_name = "инициатива"
         verbose_name_plural = "инициативы"
+
