@@ -51,5 +51,7 @@ class InitiativeAdminView(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
     def image_tag(self, obj: Initiative):
-        url = re.sub(a, "", str(obj.images))
+        url = ''
+        if obj.images:
+            url = obj.images[0]
         return format_html(f'<img src="{url}" style="max-width:200px; max-height:200px"/>')
