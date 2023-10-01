@@ -15,7 +15,7 @@ DEFAULT_URL = "http://89.108.65.101:5000/"
 @admin.register(User)
 class UserAdminView(admin.ModelAdmin):
     list_display = ("image_tag", "first_name", "last_name", "city")
-    fields = ("first_name", "last_name", "city", "role", "image_url", "district", "email", "approved")
+    fields = ("first_name", "last_name", "city", "role", "image_url", "district", "email")
 
     def save_model(self, request, obj: User, form, change):
         super().save_model(request, obj, form, change)
@@ -42,6 +42,7 @@ class InitiativeAdminView(admin.ModelAdmin):
         "ar_model",
         "event_direction",
         "user",
+        "approved",
     )
 
     def save_model(self, request, obj: Initiative, form, change):
