@@ -43,6 +43,7 @@ class User(models.Model):
     city = models.CharField(max_length=9, choices=City.choices, default=None, blank=True)
     district = models.CharField(max_length=50, blank=True, null=True)
     birthdate = models.DateField(null=True)
+    deleted_at = models.DateTimeField(verbose_name='Время удаления')
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
