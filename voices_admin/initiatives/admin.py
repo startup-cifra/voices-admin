@@ -16,7 +16,7 @@ DEFAULT_URL = "http://89.108.65.101:5000/"
 
 @admin.register(User)
 class UserAdminView(admin.ModelAdmin):
-    list_display = ("image_tag", "first_name", "last_name", "city")
+    list_display = ("image_tag", "first_name", "last_name", "city", "deleted_at")
     fields = ("first_name", "last_name", "city", "role", "image_url", "district", "email")
 
     def save_model(self, request, obj: User, form, change):
