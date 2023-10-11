@@ -1,7 +1,9 @@
+from datetime import datetime
 import re
 
 from django.conf import settings
 from django.contrib import admin
+from django.utils import timezone
 from django.utils.html import format_html
 
 from .models import Initiative, User
@@ -24,13 +26,16 @@ class UserAdminView(admin.ModelAdmin):
 
         obj.save()
 
+    def delete_queryset(self, request, queryset):
+        queryset.update(deleted_at=timezone.now())
+
     def image_tag(self, obj: User):
         return format_html(f'<img src="{obj.image_url}" style="max-width:200px; max-height:200px"/>')
 
 
 @admin.register(Initiative)
 class InitiativeAdminView(admin.ModelAdmin):
-    list_display = ("image_tag", "title", "created_at", "user")
+    list_display = ("image_tag", "title", "created_at", "approved", "deleted_at", "user")
     fields = (
         "title",
         "city",
@@ -44,10 +49,20 @@ class InitiativeAdminView(admin.ModelAdmin):
         "user",
         "approved",
     )
+    list_filter = ("status", "deleted_at", "approved")
+    actions = ["approve_queryset"]
+
+    def delete_queryset(self, request, queryset):
+        queryset.update(deleted_at=timezone.now())
+
+    def approve_queryset(self, request, queryset):
+        queryset.update(approved=True)
+
+    approve_queryset.short_description = 'Одобрить инициативы'
 
     def save_model(self, request, obj: Initiative, form, change):
         if not obj.images:
-            obj.images = [obj.image_url]
+            obj.images = [obj.image_url] if obj.image_url else []
         super().save_model(request, obj, form, change)
 
     def image_tag(self, obj: Initiative):
@@ -55,3 +70,5 @@ class InitiativeAdminView(admin.ModelAdmin):
         if obj.images:
             url = obj.images[0]
         return format_html(f'<img src="{url}" style="max-width:200px; max-height:200px"/>')
+
+    image_tag.short_description = 'Изображение'

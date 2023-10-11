@@ -83,9 +83,9 @@ class Initiative(models.Model):
         BUILDING = "Строительство"
 
     id = models.UUIDField(primary_key=True, default=uuid7)
-    city = models.CharField(max_length=35, choices=City.choices)
+    city = models.CharField(max_length=35, choices=City.choices, verbose_name='Город')
     main_text = models.TextField()
-    title = models.TextField()
+    title = models.TextField(verbose_name='Заголовок')
     images = models.JSONField(null=True, blank=True)
     image_url = models.ImageField(
         max_length=2000,
@@ -95,15 +95,17 @@ class Initiative(models.Model):
     likes_count = models.IntegerField(default=0)
     comments_count = models.IntegerField(default=0)
     reposts_count = models.IntegerField(default=0)
-    status = models.CharField(max_length=6, choices=Status.choices, default=Status.ACTIVE)
+    status = models.CharField(max_length=6, choices=Status.choices, default=Status.ACTIVE, verbose_name='Статус')
     to_date = models.DateField(null=True, blank=True)
     from_date = models.DateField(null=True, blank=True)
     ar_model = models.CharField(max_length=2000, null=True, blank=True)
     event_direction = models.CharField(max_length=100, null=True, blank=True)
     tags = models.JSONField(null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, db_column="user_id")
-    created_at = models.DateTimeField()
-    approved = models.BooleanField(null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_column="user_id", verbose_name='Пользователь')
+    created_at = models.DateTimeField(verbose_name='Время создания')
+    updated_at = models.DateTimeField()
+    deleted_at = models.DateTimeField(verbose_name='Время удаления')
+    approved = models.BooleanField(null=True, blank=True, verbose_name='Одобрена')
 
     def __str__(self):
         return self.title
@@ -112,4 +114,4 @@ class Initiative(models.Model):
         db_table = "initiatives"
         verbose_name = "инициатива"
         verbose_name_plural = "инициативы"
-
+        ordering = ['-deleted_at']
