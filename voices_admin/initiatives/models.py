@@ -1,3 +1,4 @@
+from datetime import datetime
 from functools import lru_cache
 
 from django.db import models
@@ -103,7 +104,8 @@ class Initiative(models.Model):
     event_direction = models.CharField(max_length=100, null=True, blank=True)
     tags = models.JSONField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_column="user_id", verbose_name='Пользователь')
-    created_at = models.DateTimeField(verbose_name='Время создания')
+    category = models.CharField(max_length=15, choices=Category.choices, default=Category.PROBLEM, verbose_name='Категория')
+    created_at = models.DateTimeField(verbose_name='Время создания', default=datetime.now)
     updated_at = models.DateTimeField()
     deleted_at = models.DateTimeField(verbose_name='Время удаления')
     approved = models.BooleanField(null=True, blank=True, verbose_name='Одобрена')

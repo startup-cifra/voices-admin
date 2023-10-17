@@ -48,6 +48,7 @@ class InitiativeAdminView(admin.ModelAdmin):
         "event_direction",
         "user",
         "approved",
+        "category"
     )
     list_filter = ("status", "deleted_at", "approved")
     actions = ["approve_queryset"]
