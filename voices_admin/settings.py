@@ -16,6 +16,7 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.
 
 DEFAULT_AUTO_FIELD = "django.db.models.fields.AutoField"
 
+AUTH_USER_MODEL = 'initiatives.DjangoUser'
 
 # DATABASES
 # ------------------------------------------------------------------------------

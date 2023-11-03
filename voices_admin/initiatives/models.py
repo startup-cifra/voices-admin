@@ -5,6 +5,8 @@ from django.db import models
 from passlib.context import CryptContext
 from uuid_extensions import uuid7
 
+from django.contrib.auth.models import AbstractUser
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -21,6 +23,13 @@ class City(models.TextChoices):
     @lru_cache
     def all(cls):
         return [e.value for e in cls]
+
+
+class DjangoUser(AbstractUser):
+    city = models.CharField(max_length=9, choices=City.choices, default=None, blank=True)
+    
+    class Meta:
+        db_table = 'auth_user'
 
 
 class User(models.Model):
@@ -86,9 +95,9 @@ class Initiative(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid7)
     city = models.CharField(max_length=35, choices=City.choices, verbose_name='Город')
-    main_text = models.TextField()
+    main_text = models.TextField(verbose_name='Текст')
     title = models.TextField(verbose_name='Заголовок')
-    images = models.JSONField(null=True, blank=True)
+    images = models.JSONField(null=True, blank=True, verbose_name='Изображения')
     image_url = models.ImageField(
         max_length=2000,
         null=True,
@@ -98,13 +107,15 @@ class Initiative(models.Model):
     comments_count = models.IntegerField(default=0)
     reposts_count = models.IntegerField(default=0)
     status = models.CharField(max_length=6, choices=Status.choices, default=Status.ACTIVE, verbose_name='Статус')
-    to_date = models.DateField(null=True, blank=True)
-    from_date = models.DateField(null=True, blank=True)
-    ar_model = models.CharField(max_length=2000, null=True, blank=True)
-    event_direction = models.CharField(max_length=100, null=True, blank=True)
+    to_date = models.DateField(null=True, blank=True, verbose_name='Дата начала')
+    from_date = models.DateField(null=True, blank=True, verbose_name='Дата окончания')
+    ar_model = models.FileField(max_length=2000, null=True, blank=True, verbose_name='AR-модель (3D-модель)')
+    event_direction = models.CharField(max_length=100, null=True, blank=True, verbose_name='Направление мероприятия')
     tags = models.JSONField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_column="user_id", verbose_name='Пользователь')
-    category = models.CharField(max_length=15, choices=Category.choices, default=Category.PROBLEM, verbose_name='Категория')
+    category = models.CharField(
+        max_length=15, choices=Category.choices, default=Category.PROBLEM, verbose_name='Категория'
+    )
     created_at = models.DateTimeField(verbose_name='Время создания', default=datetime.now)
     updated_at = models.DateTimeField()
     deleted_at = models.DateTimeField(verbose_name='Время удаления')

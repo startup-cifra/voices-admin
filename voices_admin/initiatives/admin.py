@@ -1,10 +1,11 @@
-from datetime import datetime
 import re
 
 from django.conf import settings
 from django.contrib import admin
 from django.utils import timezone
 from django.utils.html import format_html
+from django.core.handlers.wsgi import WSGIRequest
+from django.db.models import QuerySet
 
 from .models import Initiative, User
 
@@ -48,10 +49,15 @@ class InitiativeAdminView(admin.ModelAdmin):
         "event_direction",
         "user",
         "approved",
-        "category"
+        "category",
     )
     list_filter = ("status", "deleted_at", "approved")
     actions = ["approve_queryset"]
+
+    def get_queryset(self, request: WSGIRequest):
+        city = request.user.city
+        qs: QuerySet = super(InitiativeAdminView, self).get_queryset(request)
+        return qs.filter(city=city)
 
     def delete_queryset(self, request, queryset):
         queryset.update(deleted_at=timezone.now())
