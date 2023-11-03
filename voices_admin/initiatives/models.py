@@ -68,15 +68,10 @@ class Initiative(models.Model):
     class CitizenCategory(models.TextChoices):
         PROBLEM = "PROBLEM"
         EVENT = "EVENT"
-        DECIDE_TOGETHER = "DECIDE_TOGETHER"
-        SURVEY = "SURVEY"
-        PROJECT = "PROJECT"
-        BUILDING = "BUILDING"
 
     class Category(models.TextChoices):
         PROBLEM = "PROBLEM"
         EVENT = "EVENT"
-        DECIDE_TOGETHER = "DECIDE_TOGETHER"
         SURVEY = "SURVEY"
         PROJECT = "PROJECT"
         BUILDING = "BUILDING"

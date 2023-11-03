@@ -14,6 +14,30 @@ a = re.compile(r"[\'\[\]\"]+")
 UPLOAD_URL = "http://89.108.65.101:8000/" if settings.DEBUG else "localhost:8000"
 DEFAULT_URL = "http://89.108.65.101:5000/"
 
+from django.contrib.admin import SimpleListFilter
+
+
+class CountryFilter(SimpleListFilter):
+    title = 'Типы'
+    parameter_name = 'types'
+
+    def lookups(self, request, model_admin):
+        return [('citizen', 'От жителей'), ('government', 'От властей')]
+
+    def queryset(self, request, queryset):
+        if self.value() == 'От властей':
+            return queryset.filter(
+                category__in=(Initiative.CitizenCategory.EVENT, Initiative.CitizenCategory.PROBLEM)
+            )
+        if self.value() == 'От жителей':
+            return queryset.filter(
+                category__in=(
+                    Initiative.Category.SURVEY,
+                    Initiative.Category.PROJECT,
+                    Initiative.Category.BUILDING,
+                )
+            )
+
 
 @admin.register(User)
 class UserAdminView(admin.ModelAdmin):
@@ -51,7 +75,7 @@ class InitiativeAdminView(admin.ModelAdmin):
         "approved",
         "category",
     )
-    list_filter = ("status", "deleted_at", "approved")
+    list_filter = ("status", "deleted_at", "approved", CountryFilter)
     actions = ["approve_queryset"]
 
     def get_queryset(self, request: WSGIRequest):
