@@ -86,7 +86,7 @@ class InitiativeAdminView(admin.ModelAdmin):
     def get_queryset(self, request: WSGIRequest):
         city = request.user.city
         qs: QuerySet = super(InitiativeAdminView, self).get_queryset(request)
-        return qs.filter(city=city).exclude(deleted_at__isnull=True)
+        return qs.filter(city=city).filter(deleted_at__isnull=True)
 
     def delete_queryset(self, request, queryset):
         queryset.update(deleted_at=timezone.now())
