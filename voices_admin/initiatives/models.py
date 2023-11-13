@@ -6,6 +6,8 @@ from passlib.context import CryptContext
 from uuid_extensions import uuid7
 
 from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy as _
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -15,9 +17,9 @@ def get_password_hash(password):
 
 
 class City(models.TextChoices):
-    YAROSLAVL = "Ярославль"
-    ROSTOV = "Ростов"
-    TUTAEV = "Тутаев"
+    YAROSLAVL = "YAROSLAVL", _('Ярославль')
+    ROSTOV = "ROSTOV", _('Ростов')
+    TUTAEV = "TUTAEV", _('Тутаев')
 
     @classmethod
     @lru_cache
@@ -34,8 +36,8 @@ class DjangoUser(AbstractUser):
 
 class User(models.Model):
     class Role(models.TextChoices):
-        CITIZEN = "citizen"
-        GOVERNMENT = "government"
+        CITIZEN = "citizen", _('Житель')
+        GOVERNMENT = "government", _('Правительство')
 
     id = models.UUIDField(primary_key=True, default=uuid7)
     first_name = models.CharField(max_length=50, null=True, default="Анонимный", blank=True)
@@ -66,27 +68,40 @@ class User(models.Model):
 
 class Initiative(models.Model):
     class CitizenCategory(models.TextChoices):
-        PROBLEM = "PROBLEM"
-        EVENT = "EVENT"
+        PROBLEM = "PROBLEM", _('Правительство')
+        EVENT = "EVENT", _('Правительство')
 
     class Category(models.TextChoices):
-        PROBLEM = "PROBLEM"
-        EVENT = "EVENT"
-        SURVEY = "SURVEY"
-        PROJECT = "PROJECT"
-        BUILDING = "BUILDING"
+        PROBLEM = "PROBLEM", _('Новость')
+        EVENT = "EVENT", _('Событие')
+        SURVEY = "SURVEY", _('Опрос')
+        PROJECT = "PROJECT", _('Проект')
+        BUILDING = "BUILDING", _('Строительство')
 
     class Status(models.TextChoices):
-        ACTIVE = "active"
-        SOLVED = "solved"
+        ACTIVE = "active", _('Активно')
+        SOLVED = "solved", _('Решено')
 
     class TagsCategory(models.TextChoices):
-        PROBLEM = "Новость"
-        EVENT = "Событие"
-        DECIDE_TOGETHER = "Решаем вместе"
-        SURVEY = "Опрос"
-        PROJECT = "Проект"
-        BUILDING = "Строительство"
+        PROBLEM = "PROBLEM", _('Новость')
+        EVENT = "EVENT", _('Событие')
+        SURVEY = "SURVEY", _('Опрос')
+        PROJECT = "PROJECT", _('Проект')
+        BUILDING = "BUILDING", _('Строительство')
+
+    class EventType(models.TextChoices):
+        ECOLOGY = "Экология", _('Экология')
+        EDUCATION_AND_SCIENCE = "Образование и наука", _('Образование и наука')
+        SPORTS = "Спорт", _('Спорт')
+        TOURISM = "Туризм", _('Туризм')
+        HEALTH_AND_MEDICINE = "Здоровье и медицина", _('Здоровье и медицина')
+        PUBLIC_ORDER = "Общественный порядок", _('Общественный порядок')
+        CHARITY = "Благотворительность", _('Благотворительность')
+        TRANSPORT = "Транспорт", _('Транспорт')
+        CULTURE_AND_ART = "Культура и искусство ", _('Культура и искусство')
+        ENTERTAINMENT = "Развлечения", _('Развлечения')
+        INNOVATION = "Инновации", _('Инновации')
+        ENTREPRENEURSHIP = "Предпринимательство", _('Предпринимательство')
 
     id = models.UUIDField(primary_key=True, default=uuid7)
     city = models.CharField(max_length=35, choices=City.choices, verbose_name='Город')
@@ -105,7 +120,7 @@ class Initiative(models.Model):
     to_date = models.DateField(null=True, blank=True, verbose_name='Дата начала')
     from_date = models.DateField(null=True, blank=True, verbose_name='Дата окончания')
     ar_model = models.FileField(max_length=2000, null=True, blank=True, verbose_name='AR-модель (3D-модель)')
-    event_direction = models.CharField(max_length=100, null=True, blank=True, verbose_name='Направление мероприятия')
+    event_direction = models.CharField(max_length=100, null=True, blank=True, verbose_name='Направление мероприятия', choices=EventType.choices)
     tags = models.JSONField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_column="user_id", verbose_name='Пользователь')
     category = models.CharField(

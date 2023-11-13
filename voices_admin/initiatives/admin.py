@@ -43,6 +43,12 @@ class CountryFilter(SimpleListFilter):
 class UserAdminView(admin.ModelAdmin):
     list_display = ("image_tag", "first_name", "last_name", "city", "deleted_at")
     fields = ("first_name", "last_name", "city", "role", "image_url", "district", "email")
+    list_per_page = 20
+
+    def get_queryset(self, request: WSGIRequest):
+        city = request.user.city
+        qs: QuerySet = super(UserAdminView, self).get_queryset(request)
+        return qs.filter(city=city).exclude(deleted_at__isnull=True)
 
     def save_model(self, request, obj: User, form, change):
         super().save_model(request, obj, form, change)
@@ -77,11 +83,12 @@ class InitiativeAdminView(admin.ModelAdmin):
     )
     list_filter = ("status", "deleted_at", "approved", CountryFilter)
     actions = ["approve_queryset"]
+    list_per_page = 20
 
     def get_queryset(self, request: WSGIRequest):
         city = request.user.city
         qs: QuerySet = super(InitiativeAdminView, self).get_queryset(request)
-        return qs.filter(city=city)
+        return qs.filter(city=city).exclude(deleted_at__isnull=True)
 
     def delete_queryset(self, request, queryset):
         queryset.update(deleted_at=timezone.now())
