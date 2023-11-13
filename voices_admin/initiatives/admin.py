@@ -25,11 +25,9 @@ class CountryFilter(SimpleListFilter):
         return [('citizen', 'От жителей'), ('government', 'От властей')]
 
     def queryset(self, request, queryset):
-        if self.value() == 'От властей':
-            return queryset.filter(
-                category__in=(Initiative.CitizenCategory.EVENT, Initiative.CitizenCategory.PROBLEM)
-            )
-        if self.value() == 'От жителей':
+        if self.value() == 'citizen':
+            return queryset.filter(category__in=(Initiative.CitizenCategory.EVENT, Initiative.CitizenCategory.PROBLEM))
+        if self.value() == 'government':
             return queryset.filter(
                 category__in=(
                     Initiative.Category.SURVEY,
@@ -48,7 +46,7 @@ class UserAdminView(admin.ModelAdmin):
     def get_queryset(self, request: WSGIRequest):
         city = request.user.city
         qs: QuerySet = super(UserAdminView, self).get_queryset(request)
-        return qs.filter(city=city).exclude(deleted_at__isnull=True)
+        return qs.filter(city=city).filter(deleted_at__isnull=True)
 
     def save_model(self, request, obj: User, form, change):
         super().save_model(request, obj, form, change)
