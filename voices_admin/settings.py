@@ -16,20 +16,28 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.
 
 DEFAULT_AUTO_FIELD = "django.db.models.fields.AutoField"
 
-AUTH_USER_MODEL = 'initiatives.DjangoUser'
+AUTH_USER_MODEL = "initiatives.DjangoUser"
 
 # DATABASES
 # ------------------------------------------------------------------------------
 DATABASES = {
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": env("DATABASE_NAME", default=""),
+    #     "USER": env("DATABASE_USER", default=""),
+    #     "PASSWORD": env("DATABASE_PASSWORD", default=""),
+    #     "HOST": env("DATABASE_HOST", default="localhost"),
+    #     "PORT": "5432",
+    #     "ATOMIC_REQUESTS": True,
+    # },
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("DATABASE_NAME", default=""),
-        "USER": env("DATABASE_USER", default=""),
-        "PASSWORD": env("DATABASE_PASSWORD", default=""),
-        "HOST": env("DATABASE_HOST", default="localhost"),
-        "PORT": "5432",
-        "ATOMIC_REQUESTS": True,
-    }
+        "ENGINE": "djongo",
+        "NAME": "voices",
+        "CLIENT": {
+            "host": "localhost",
+            "port": 27017,
+        },
+    },
 }
 
 

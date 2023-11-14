@@ -18,16 +18,16 @@ from django.contrib.admin import SimpleListFilter
 
 
 class CountryFilter(SimpleListFilter):
-    title = 'Типы'
-    parameter_name = 'types'
+    title = "Типы"
+    parameter_name = "types"
 
     def lookups(self, request, model_admin):
-        return [('citizen', 'От жителей'), ('government', 'От властей')]
+        return [("citizen", "От жителей"), ("government", "От властей")]
 
     def queryset(self, request, queryset):
-        if self.value() == 'citizen':
+        if self.value() == "citizen":
             return queryset.filter(category__in=(Initiative.CitizenCategory.EVENT, Initiative.CitizenCategory.PROBLEM))
-        if self.value() == 'government':
+        if self.value() == "government":
             return queryset.filter(
                 category__in=(
                     Initiative.Category.SURVEY,
@@ -64,7 +64,7 @@ class UserAdminView(admin.ModelAdmin):
 
 @admin.register(Initiative)
 class InitiativeAdminView(admin.ModelAdmin):
-    list_display = ("image_tag", "title", "created_at", "approved", "deleted_at", "user")
+    list_display = ("image_tag", "title", "created_at", "approved", "user")
     fields = (
         "title",
         "city",
@@ -79,7 +79,7 @@ class InitiativeAdminView(admin.ModelAdmin):
         "approved",
         "category",
     )
-    list_filter = ("status", "deleted_at", "approved", CountryFilter)
+    list_filter = ("status", "approved", CountryFilter)
     actions = ["approve_queryset"]
     list_per_page = 20
 
@@ -94,7 +94,7 @@ class InitiativeAdminView(admin.ModelAdmin):
     def approve_queryset(self, request, queryset):
         queryset.update(approved=True)
 
-    approve_queryset.short_description = 'Одобрить инициативы'
+    approve_queryset.short_description = "Одобрить инициативы"
 
     def save_model(self, request, obj: Initiative, form, change):
         if not obj.images:
@@ -102,9 +102,9 @@ class InitiativeAdminView(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
     def image_tag(self, obj: Initiative):
-        url = ''
+        url = ""
         if obj.images:
             url = obj.images[0]
         return format_html(f'<img src="{url}" style="max-width:200px; max-height:200px"/>')
 
-    image_tag.short_description = 'Изображение'
+    image_tag.short_description = "Изображение"
