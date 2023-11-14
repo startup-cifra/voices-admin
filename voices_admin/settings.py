@@ -21,23 +21,23 @@ AUTH_USER_MODEL = "initiatives.DjangoUser"
 # DATABASES
 # ------------------------------------------------------------------------------
 DATABASES = {
-    # "default": {
-    #     "ENGINE": "django.db.backends.postgresql",
-    #     "NAME": env("DATABASE_NAME", default=""),
-    #     "USER": env("DATABASE_USER", default=""),
-    #     "PASSWORD": env("DATABASE_PASSWORD", default=""),
-    #     "HOST": env("DATABASE_HOST", default="localhost"),
-    #     "PORT": "5432",
-    #     "ATOMIC_REQUESTS": True,
-    # },
     "default": {
-        "ENGINE": "djongo",
-        "NAME": "voices",
-        "CLIENT": {
-            "host": "localhost",
-            "port": 27017,
-        },
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("DATABASE_NAME", default=""),
+        "USER": env("DATABASE_USER", default=""),
+        "PASSWORD": env("DATABASE_PASSWORD", default=""),
+        "HOST": env("DATABASE_HOST", default="localhost"),
+        "PORT": "5432",
+        "ATOMIC_REQUESTS": True,
     },
+    # "default": {
+    #     "ENGINE": "djongo",
+    #     "NAME": "voices",
+    #     "CLIENT": {
+    #         "host": "localhost",
+    #         "port": 27017,
+    #     },
+    # },
 }
 
 
