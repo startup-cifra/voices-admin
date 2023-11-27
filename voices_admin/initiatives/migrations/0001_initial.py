@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                     "image_url",
                     models.ImageField(
                         blank=True,
-                        default="https://voices-city.ru/api/storage/064e74c0198f7159800002e35c77df4a.jpg",
+                        default="https://my-city.pro/api/storage/064e74c0198f7159800002e35c77df4a.jpg",
                         max_length=2000,
                         null=True,
                         upload_to="",

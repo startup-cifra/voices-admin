@@ -47,7 +47,7 @@ class User(models.Model):
     image_url = models.ImageField(
         max_length=2000,
         null=True,
-        default="https://voices-city.ru/api/storage/064e74c0198f7159800002e35c77df4a.jpg",
+        default="https://my-city.pro/api/storage/064e74c0198f7159800002e35c77df4a.jpg",
         blank=True,
     )
     hashed_password = models.CharField(max_length=128, default=get_password_hash("string"))
