@@ -132,6 +132,7 @@ class Initiative(models.Model):
     updated_at = models.DateTimeField()
     deleted_at = models.DateTimeField(verbose_name="Время удаления")
     approved = models.BooleanField(null=True, blank=True, verbose_name="Одобрена")
+    address = models.CharField(max_length=100, null=True, blank=True, verbose_name="Адрес строительства")
 
     def __str__(self):
         return self.title

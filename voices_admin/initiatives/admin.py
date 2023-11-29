@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.utils.html import format_html
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import QuerySet
+from django import forms
 
 from .models import Initiative, User
 
@@ -35,7 +36,20 @@ class CountryFilter(SimpleListFilter):
                     Initiative.Category.BUILDING,
                 )
             )
+# @admin.register(Foo)
+# class FooAdmin(admin.ModelAdmin):
+#     form = CustomFooForm
+#     add_form = CustomAddFooForm # It is not a native django field. I created this field and use it in get_form method.
 
+#     def get_form(self, request, obj=None, **kwargs):
+#         """
+#         Use special form during foo creation
+#         """
+#         defaults = {}
+#         if obj is None:
+#             defaults['form'] = self.add_form
+#         defaults.update(kwargs)
+#         return super().get_form(request, obj, **defaults)
 
 @admin.register(User)
 class UserAdminView(admin.ModelAdmin):
@@ -78,6 +92,7 @@ class InitiativeAdminView(admin.ModelAdmin):
         "user",
         "approved",
         "category",
+        "address",
     )
     list_filter = ("status", "approved", CountryFilter)
     actions = ["approve_queryset"]

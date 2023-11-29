@@ -30,7 +30,7 @@ DATABASES = {
         "PORT": "5432",
         "ATOMIC_REQUESTS": True,
     },
-    # "default": {
+    # "djongo": {
     #     "ENGINE": "djongo",
     #     "NAME": "voices",
     #     "CLIENT": {
