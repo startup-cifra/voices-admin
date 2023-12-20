@@ -43,6 +43,7 @@ class User(models.Model):
     first_name = models.CharField(max_length=50, null=True, default="Анонимный", blank=True)
     last_name = models.CharField(max_length=50, null=True, default="Пользователь", blank=True)
     email = models.CharField(max_length=254, unique=True)
+    initiatives_count = models.IntegerField(default=0)
     role = models.CharField(max_length=10, choices=Role.choices, default=Role.CITIZEN)
     image_url = models.ImageField(
         max_length=2000,
