@@ -39,7 +39,7 @@ class CountryFilter(SimpleListFilter):
 
 @admin.register(User)
 class UserAdminView(admin.ModelAdmin):
-    list_display = ("image_tag", "first_name", "last_name", "city", "deleted_at", "initiatives_count")
+    list_display = ("image_tag", "first_name", "last_name", "city", "deleted_at")
     fields = ("first_name", "last_name", "city", "role", "image_url", "district", "email")
     list_per_page = 20
 

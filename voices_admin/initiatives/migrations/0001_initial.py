@@ -18,7 +18,6 @@ class Migration(migrations.Migration):
                 ("id", models.UUIDField(default=uuid7, primary_key=True, serialize=False)),
                 ("first_name", models.CharField(blank=True, default="Анонимный", max_length=50, null=True)),
                 ("last_name", models.CharField(blank=True, default="Пользователь", max_length=50, null=True)),
-                ("initiatives_count", models.IntegerField(default=0)),
                 ("email", models.CharField(max_length=254, unique=True)),
                 (
                     "role",
