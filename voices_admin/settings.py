@@ -236,32 +236,7 @@ if USE_TZ:
     CELERY_TIMEZONE = TIME_ZONE
 
 
-# TELEGRAM BOT
-# ------------------------------------------------------------------------------
-
-BOT_TOKEN = env("BOT_TOKEN", default=None)
-
-
-# REST FRAMEWORK
-# ------------------------------------------------------------------------------
-REST_FRAMEWORK = {
-    # "DEFAULT_AUTHENTICATION_CLASSES": [
-    #     "rest_framework_simplejwt.authentication.JWTAuthentication",
-    # ],
-    # "DEFAULT_PERMISSION_CLASSES": [
-    #     "rest_framework.permissions.IsAuthenticated",
-    # ],
-    "DEFAULT_AUTHENTICATION_CLASSES": [],
-    "DEFAULT_PERMISSION_CLASSES": [],
-    "TEST_REQUEST_DEFAULT_FORMAT": "json",
-}
-
-SWAGGER_SETTINGS = {
-    "SECURITY_DEFINITIONS": {
-        "Bearer": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header",
-        }
-    }
-}
+REGION_NAME = env("REGION_NAME")
+S3_ENDPOINT_URL = env("S3_ENDPOINT_URL")
+S3_AWS_ACCESS_KEY_ID = env("S3_AWS_ACCESS_KEY_ID")
+S3_AWS_SECRET_ACCESS_KEY = env("S3_AWS_SECRET_ACCESS_KEY")

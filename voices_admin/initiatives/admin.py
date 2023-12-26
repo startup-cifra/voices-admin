@@ -12,10 +12,15 @@ from .models import Initiative, User
 
 a = re.compile(r"[\'\[\]\"]+")
 
-UPLOAD_URL = "http://89.108.65.101:8000/" if settings.DEBUG else "localhost:8000"
-DEFAULT_URL = "http://89.108.65.101:5000/"
+UPLOAD_URL = "http://89.223.126.166:8000/" if not settings.DEBUG else "localhost:8000"
 
 from django.contrib.admin import SimpleListFilter
+
+# import pymongo
+
+# connect_string = 'mongodb://localhost:27017' 
+
+# my_client = pymongo.MongoClient(connect_string)
 
 
 class CountryFilter(SimpleListFilter):
@@ -64,7 +69,7 @@ class UserAdminView(admin.ModelAdmin):
 
     def save_model(self, request, obj: User, form, change):
         super().save_model(request, obj, form, change)
-        if not obj.image_url.url.startswith(UPLOAD_URL) and not obj.image_url.url.startswith(DEFAULT_URL):
+        if not obj.image_url.url.startswith('http'):
             obj.image_url = UPLOAD_URL + obj.image_url.url.removeprefix("/")
 
         obj.save()
@@ -78,7 +83,9 @@ class UserAdminView(admin.ModelAdmin):
 
 @admin.register(Initiative)
 class InitiativeAdminView(admin.ModelAdmin):
-    list_display = ("image_tag", "title", "created_at", "approved", "user")
+    list_display = ("image_tag", "title", "created_at", "approved", "user", 
+                    # "survey",
+                    )
     fields = (
         "title",
         "city",
@@ -114,6 +121,9 @@ class InitiativeAdminView(admin.ModelAdmin):
     def save_model(self, request, obj: Initiative, form, change):
         if not obj.images:
             obj.images = [obj.image_url] if obj.image_url else []
+
+        if not obj.image_url.url.startswith('http'):
+            obj.image_url = UPLOAD_URL + obj.image_url.url.removeprefix("/")
         super().save_model(request, obj, form, change)
 
     def image_tag(self, obj: Initiative):
@@ -123,3 +133,8 @@ class InitiativeAdminView(admin.ModelAdmin):
         return format_html(f'<img src="{url}" style="max-width:200px; max-height:200px"/>')
 
     image_tag.short_description = "Изображение"
+    
+    # def survey(self, obj: Initiative):
+    #     result = my_client.voices.surveys.find_one({'_id': str(obj.id)})
+    #     if result:
+    #         return str(result)

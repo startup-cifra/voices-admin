@@ -26,6 +26,8 @@ pillow = "^10.0.0"
 uuid7 = "^0.1.0"
 passlib = "^1.7.4"
 bcrypt = "^4.0.1"
+pymongo = "^4.6.1"
+botocore = "^1.33.13"
 
 [tool.poetry.dev-dependencies]
 black = "^23.1.0"
